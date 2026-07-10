@@ -1,0 +1,12 @@
+# dependencies
+node_modules/
+
+# build output
+dist/
+smart-energy-dist.zip
+
+# local / editor
+*.local
+.vite/
+.DS_Store
+Thumbs.db
