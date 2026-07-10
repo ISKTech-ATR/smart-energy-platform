@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { useParams, Navigate } from 'react-router-dom'
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts'
 import Breadcrumb from '../components/Breadcrumb.jsx'
@@ -21,8 +22,21 @@ const ACCENT_HEX = { green: '#8ec63f', amber: '#e0a458', cyan: '#3fc8d6' }
 
 export default function DetailPage() {
   const { metricKey } = useParams()
+  const [zone, setZone] = useState('Zone A')
   const m = METRICS[metricKey]
   if (!m) return <Navigate to="/energy" replace />
+
+  // Zone selection: scale the primary chart + KPIs to the picked zone's share.
+  const splitA = m.split.find((s) => s.zone === 'Zone A')?.value || 1
+  const splitSel = m.split.find((s) => s.zone === zone)?.value || splitA
+  const zoneFactor = splitSel / splitA
+  const zoneLetter = zone.slice(-1)
+  const chartTitle = m.zoneTitle.replace(/ZONE\s+[A-C]/i, `ZONE ${zoneLetter}`)
+  const zoneSeries = m.series.map((d) => ({ ...d, value: Math.max(0, Math.round(d.value * zoneFactor)) }))
+  const zoneKpis = m.kpis.map((k) => {
+    const n = parseFloat(k.val)
+    return Number.isNaN(n) ? k : { ...k, val: String(Math.max(0, Math.round(n * zoneFactor))) }
+  })
 
   const trail = [
     { label: 'Home', to: '/dashboard' },
@@ -79,7 +93,7 @@ export default function DetailPage() {
       {/* --- Overview: matches the reference screenshots --- */}
       <div className="detail-grid">
         <div className="kpi-col">
-          {m.kpis.map((k) => (
+          {zoneKpis.map((k) => (
             <div className="kpi-card" key={k.label}>
               <div className="kpi-head">
                 <div className="kpi-icon">
@@ -95,9 +109,9 @@ export default function DetailPage() {
         </div>
 
         <div>
-          <TimeSeriesChart series={m.series} title={m.zoneTitle} accent={m.accent} />
+          <TimeSeriesChart series={zoneSeries} title={chartTitle} accent={m.accent} />
           <div className="detail-bottom">
-            <ZoneMap />
+            <ZoneMap activeZone={zone} onSelect={setZone} />
             <SplitPanel title={m.splitTitle} data={m.split} />
           </div>
         </div>

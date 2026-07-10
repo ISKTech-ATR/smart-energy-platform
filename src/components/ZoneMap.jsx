@@ -1,11 +1,22 @@
 import { MAP_PINS } from '../data/mock.js'
 
+const ZONES = ['Zone A', 'Zone B', 'Zone C']
+
 // Stylised dark schematic "zone map" (no external tiles — CSP-safe, self-contained).
-export default function ZoneMap() {
+// Clicking a pin or the A/B/C toggle selects that zone.
+export default function ZoneMap({ activeZone = 'Zone A', onSelect }) {
+  const pick = (z) => onSelect && onSelect(z)
   return (
     <div className="panel">
       <div className="panel-head">
         <h3 style={{ fontSize: 18 }}>ZONE MAP</h3>
+        <div className="zone-toggle">
+          {ZONES.map((z) => (
+            <button key={z} className={activeZone === z ? 'active' : ''} onClick={() => pick(z)}>
+              {z.replace('Zone ', '')}
+            </button>
+          ))}
+        </div>
       </div>
       <div className="map-wrap">
         <svg width="100%" height="100%" viewBox="0 0 600 300" preserveAspectRatio="xMidYMid slice">
@@ -25,16 +36,25 @@ export default function ZoneMap() {
           ].map(([x, y, w, h], i) => (
             <rect key={i} x={x} y={y} width={w} height={h} rx="6" fill="#141d31" stroke="#233150" />
           ))}
-          {/* zone A footprint highlight */}
-          <rect x="150" y="55" width="80" height="55" rx="6" fill="rgba(142,198,63,0.18)" stroke="#8ec63f" />
           <text x="8" y="292" fill="#3c4a66" fontSize="11" fontWeight="600">Jalan PJU 8/8A</text>
         </svg>
-        {MAP_PINS.map((p) => (
-          <div className="map-pin" key={p.zone} style={{ left: `${p.x}%`, top: `${p.y}%` }}>
-            <span>{p.zone}</span>
-            <span className="dot" style={{ background: p.color }} />
-          </div>
-        ))}
+        {MAP_PINS.map((p) => {
+          const active = activeZone === p.zone
+          return (
+            <div
+              className={'map-pin' + (active ? ' active' : '')}
+              key={p.zone}
+              style={{ left: `${p.x}%`, top: `${p.y}%` }}
+              onClick={() => pick(p.zone)}
+              role="button"
+              tabIndex={0}
+            >
+              <span>{p.zone}</span>
+              <span className="dot" style={{ background: active ? '#8ec63f' : p.color }} />
+            </div>
+          )
+        })}
+        <div className="map-selected">Selected: {activeZone}</div>
         <div className="map-controls">
           <button>+</button>
           <button>−</button>
