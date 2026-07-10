@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <defs>
+    <linearGradient id="orbit" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#cdd6e0"/>
+      <stop offset="0.45" stop-color="#8f9aa8"/>
+      <stop offset="0.6" stop-color="#1f3f8f"/>
+      <stop offset="1" stop-color="#ff7a18"/>
+    </linearGradient>
+    <linearGradient id="bld" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#3b74d6"/>
+      <stop offset="1" stop-color="#16357e"/>
+    </linearGradient>
+    <linearGradient id="eG" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#2f6fd6"/>
+      <stop offset="1" stop-color="#14337c"/>
+    </linearGradient>
+  </defs>
+
+  <!-- orbit swoosh -->
+  <g transform="rotate(-20 64 68)">
+    <ellipse cx="64" cy="68" rx="58" ry="30" fill="none" stroke="url(#orbit)" stroke-width="8" stroke-linecap="round"/>
+    <ellipse cx="64" cy="68" rx="47" ry="22" fill="none" stroke="#0e2350" stroke-width="3" opacity="0.55"/>
+  </g>
+
+  <!-- skyline -->
+  <g fill="url(#bld)" stroke="#0e2350" stroke-width="0.6">
+    <rect x="44" y="30" width="12" height="52"/>
+    <rect x="57" y="18" width="8" height="64"/>
+    <rect x="66" y="34" width="14" height="48"/>
+    <rect x="80" y="40" width="9" height="42"/>
+    <rect x="37" y="44" width="8" height="38"/>
+  </g>
+  <line x1="61" y1="18" x2="61" y2="6" stroke="#3b74d6" stroke-width="2"/>
+  <g fill="#0e2350" opacity="0.7">
+    <rect x="47" y="36" width="2" height="2"/><rect x="51" y="36" width="2" height="2"/>
+    <rect x="47" y="44" width="2" height="2"/><rect x="51" y="44" width="2" height="2"/>
+    <rect x="47" y="52" width="2" height="2"/><rect x="51" y="52" width="2" height="2"/>
+    <rect x="69" y="40" width="2" height="2"/><rect x="74" y="40" width="2" height="2"/>
+    <rect x="69" y="48" width="2" height="2"/><rect x="74" y="48" width="2" height="2"/>
+  </g>
+
+  <!-- bold E monogram -->
+  <path d="M40 62 h44 v13 h-30 v6 h26 v12 h-26 v6 h30 v13 h-44 z" fill="url(#eG)" stroke="#0b204a" stroke-width="1.2"/>
+</svg>
