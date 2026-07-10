@@ -20,8 +20,15 @@ export function AuthProvider({ children }) {
     localStorage.removeItem(KEY)
     setUser(null)
   }
+  const updateUser = (partial) => {
+    setUser((prev) => {
+      const next = { ...prev, ...partial }
+      localStorage.setItem(KEY, JSON.stringify(next))
+      return next
+    })
+  }
 
-  return <AuthCtx.Provider value={{ user, login, logout }}>{children}</AuthCtx.Provider>
+  return <AuthCtx.Provider value={{ user, login, logout, updateUser }}>{children}</AuthCtx.Provider>
 }
 
 export const useAuth = () => useContext(AuthCtx)

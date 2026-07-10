@@ -103,6 +103,12 @@ export const Icon = ({ name, size = 24 }) => {
           <path d="M6 9l6 6 6-6" />
         </svg>
       )
+    case 'close':
+      return (
+        <svg {...p} {...S}>
+          <path d="M6 6l12 12M18 6L6 18" />
+        </svg>
+      )
     case 'user':
       return (
         <svg {...p} {...S}>
